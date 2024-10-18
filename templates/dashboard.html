@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" href="/static/dashboard_static.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo-title">
+                <img src="/static/logo.png" alt="Логотип" class="logo">
+                <h1>Личный кабинет</h1>
+            </div>
+            <nav>
+                <a href="/">Главная</a>
+                <a href="/dashboard">Личный кабинет</a>
+                <a href="/logout">Выход</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="profile-container">
+            <h2>Заполнение данных</h2>
+            <form id="dataForm" enctype="multipart/form-data" method="post" action="/process_data">
+                <div class="form-group">
+                    <label for="company_name">Название компании:</label>
+                    <input type="text" id="company_name" name="company_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="template">Выберите файл шаблона:</label>
+                    <input type="file" id="template" name="template" accept=".xlsx" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="protocol">Выберите файл протокола:</label>
+                    <input type="file" id="protocol" name="protocol" accept=".pdf,.doc,.docx" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="group">Выберите группу:</label>
+                    <select id="group" name="group" required>
+                        <option value="">--Выберите группу--</option>
+                        <option value="1">Группа 1</option>
+                        <option value="2">Группа 2</option>
+                        <option value="3">Группа 3</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submitButton">Загрузить данные</button>
+            </form>
+            <p id="responseMessage"></p>
+        </div>
+
+        <div class="spinner-overlay" id="spinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>Загрузка... Пожалуйста, подождите.</p>
+        </div>
+
+        <div class="document-download">
+            <h2>Скачивание сгенерированных PDF файлов</h2>
+            <form method="GET" action="/download_documents">
+                <button type="submit">Скачать документы</button>
+            </form>
+        </div>
+    </main>
+
+
+<script>
+    const form = document.getElementById('dataForm');
+    const spinner = document.getElementById('spinner');
+    const responseMessage = document.getElementById('responseMessage');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Предотвращаем мгновенную отправку
+
+        // Показываем спиннер
+        spinner.style.display = 'flex';
+
+        // Отправляем данные формы
+        const formData = new FormData(form);
+        fetch('/process_data', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Скрываем спиннер после получения ответа
+            spinner.style.display = 'none';
+
+            // Отображаем сообщение о завершении
+            responseMessage.textContent = data.message || "Файлы успешно загружены!";
+        })
+        .catch(error => {
+            // В случае ошибки скрываем спиннер и показываем сообщение
+            spinner.style.display = 'none';
+            responseMessage.textContent = "Произошла ошибка: " + error.message;
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

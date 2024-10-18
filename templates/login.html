@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 50px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .footer a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Вход</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Электронная почта</label>
+                <input id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Войти</button>
+            </div>
+        </form>
+        <div id="alert" style="display:none; color:red;"></div>
+        <div class="footer">
+            <p>Нет аккаунта? <a href="/register">Зарегистрируйтесь здесь</a></p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('login-form');
+        const error_block = document.getElementById('alert');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            error_block.style.display = 'none'; // Очистка ошибки
+            const data = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+            const jsonData = JSON.stringify(data);
+
+            // Отправляем данные на сервер
+            fetch(`http://127.0.0.1:8000/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: jsonData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+
+                if (data.status === 'success') {
+                    error_block.style.display = 'none';
+                    window.location.href = '/dashboard';
+                } else if (data.status === 'error') {
+                    error_block.style.display = 'block';
+                    error_block.textContent = 'Неверный email или пароль. Пожалуйста, проверьте введенные данные и попробуйте снова.';
+                }
+            })
+            .catch((error) => {
+                error_block.style.display = 'block';
+                error_block.textContent = 'Ошибка сервера';
+            });
+        });
+    </script>
+</body>
+</html>

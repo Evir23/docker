@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лучшее решение для вашего бизнеса</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="top"></div>
+
+    <!-- Навигация -->
+    <nav>
+        <ul class="nav-list">
+            <li><a href="#top">Главная</a></li>
+            <li><a href="#pricing">Тарифы</a></li>
+            <li><a href="#about">О нас</a></li>
+            <li><a href="/login" class="login-button">Личный кабинет</a></li>
+        </ul>
+    </nav>
+
+    <!-- Главный блок -->
+    <header>
+        <h1>Лучшее решение для вашего бизнеса</h1>
+        <p>Наша платформа предоставляет все необходимые инструменты для эффективного управления вашим бизнесом. Присоединяйтесь к нам и откройте новые возможности для роста.</p>
+    </header>
+
+    <!-- Особенности -->
+    <section id="features">
+        <h2>Ключевые особенности</h2>
+        <div class="features-container">
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="feature-number">1.</span>
+                    <h3>Интуитивно понятный интерфейс</h3>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-number">2.</span>
+                    <h3>Масштабируемость</h3>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-number">3.</span>
+                    <h3>Безопасность данных</h3>
+                </div>
+            </div>
+            <div class="feature-details">
+                <div class="feature-detail">
+                    <p>Наша платформа разработана с учетом потребностей пользователей, обеспечивая легкое и эффективное управление вашим бизнесом.</p>
+                </div>
+                <div class="feature-detail">
+                    <p>Система способна адаптироваться к росту вашего бизнеса, обеспечивая необходимые ресурсы и функциональность.</p>
+                </div>
+                <div class="feature-detail">
+                    <p>Мы гарантируем надежную защиту ваших данных, используя передовые методы шифрования и резервного копирования.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Тарифные планы -->
+    <section id="pricing">
+        <h2>Тарифные планы</h2>
+        <div class="pricing-container">
+            <div class="plan">
+                <h3>Базовый</h3>
+                <ul>
+                    <li>пример</li>
+                    <li>пример</li>
+                    <li>пример</li>
+                </ul>
+                <button>Нажмите здесь</button>
+            </div>
+            <div class="plan">
+                <h3>Стандартный</h3>
+                <ul>
+                    <li>пример</li>
+                    <li>пример</li>
+                    <li>пример</li>
+                </ul>
+                <button>Нажмите здесь</button>
+            </div>
+            <div class="plan">
+                <h3>Премиум</h3>
+                <ul>
+                    <li>пример</li>
+                    <li>пример</li>
+                    <li>пример</li>
+                </ul>
+                <button>Нажмите здесь</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- О компании -->
+    <section id="about">
+        <h2>О компании</h2>
+        <div class="about-container">
+            <div class="about-image">
+                <img src="/static/images/about.jpg" alt="Описание изображения" />
+            </div>
+            <div class="about-content">
+                <div class="about-item">
+                    <h3 class="about-title">Наша миссия</h3>
+                    <p class="about-description">Мы стремимся стать ведущей платформой для управления бизнесом, предоставляя инновационные решения, которые помогают нашим клиентам добиваться успеха.</p>
+                </div>
+                <div class="about-item">
+                    <h3 class="about-title">Наши ценности</h3>
+                    <p class="about-description">Ориентация на клиента, Непрерывное совершенствование, Командный дух, Социальная ответственность.</p>
+                </div>
+                <div class="about-item">
+                    <h3 class="about-title">История развития</h3>
+                    <p class="about-description">Компания была основана в 2015 году с целью предоставить инновационные и эффективные бизнес-решения.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Подвал -->
+    <footer>
+        <p>&copy; 2024 Все права защищены.</p>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Находим все ссылки с якорями
+            const smoothLinks = document.querySelectorAll('a[href^="#"]');
+
+            // Добавляем каждой ссылке событие click
+            smoothLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 50, // Учет высоты фиксированной навигации
+                            behavior: 'smooth' // Плавная прокрутка
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+    document.querySelectorAll('.about-title').forEach(item => {
+    item.addEventListener('click', event => {
+        const description = item.nextElementSibling;
+        if (description.style.maxHeight && description.style.maxHeight !== "0px") {
+            description.style.maxHeight = "0px";
+            description.style.padding = "0";  // Убираем отступы при скрытии
+        } else {
+            description.style.maxHeight = description.scrollHeight + "px";  // Автоматически устанавливаем высоту содержимого
+            description.style.padding = "10px 0";  // Добавляем отступы при показе
+        }
+    });
+});
+    </script>
+
+</body>
+</html>
